@@ -504,6 +504,22 @@ function drupal($http, $q, drupalSettings, drupalToken) {
     });
   };
 
+  // VARIABLES GET
+  this.get_variables = function(args) {
+    var path = this.restPath + '/system/get_variables';
+    var drupal = this;
+    return this.token().then(function(token) {
+        return $http({
+            method: 'POST',
+            url: path,
+            headers: { 'X-CSRF-Token': token },
+            data: { name: args.join(',') }
+        }).then(function(result) {
+          return result.data;
+        });
+    });
+  };
+
   // VIEWS
   this.views_json = function(path) {
     var views_json_path = this.sitePath + '/' + path;
