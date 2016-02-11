@@ -206,6 +206,21 @@ function drupal($http, $q, drupalSettings, drupalToken) {
     });
   };
 
+  this.node_lookup = function(alias) {
+    var options = {
+      method: 'POST',
+      url: this.restPath + '/node/lookup',
+      headers: { 'Content-Type': 'application/json' },
+      data: { alias: alias }
+    };
+    return this.token().then(function(token) {
+        options.headers['X-CSRF-Token'] = token;
+        return $http(options).then(function(result) {
+            if (result.status == 200) { return result.data; }
+        });
+    });
+  };
+
   this.taxonomy_term_load = function(tid) {
     return $http.get(this.restPath + '/taxonomy_term/' + tid + '.json').then(function(result) {
         if (result.status == 200) { return result.data; }
